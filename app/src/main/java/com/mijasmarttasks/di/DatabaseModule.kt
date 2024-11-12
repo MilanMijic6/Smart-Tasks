@@ -7,6 +7,7 @@ import com.mijasmarttasks.data.local.TaskDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -16,15 +17,18 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(context: Context): TaskDatabase {
+    fun provideDatabase(
+        @ApplicationContext context: Context
+    ): TaskDatabase {
         return Room.databaseBuilder(
             context,
             TaskDatabase::class.java,
-            "task_database"
+            "tasks_database"
         ).build()
     }
 
     @Provides
+    @Singleton
     fun provideTaskDao(database: TaskDatabase): TaskDao {
         return database.taskDao()
     }

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Smart tasks</string>
+    <string name="no_date_label">N/A</string>
+    <string name="days_left_label">Days left</string>
+    <string name="due_date_label">Due date</string>
+    <string name="today_label">Today</string>
+    <string name="no_tasks_for_today_label">No tasks for today!</string>
 </resources>

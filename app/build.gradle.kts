@@ -83,6 +83,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.androidx.compose.animation)
+    implementation(libs.androidx.material.icons.core)
+    implementation(libs.androidx.material.icons.extended)
+
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
