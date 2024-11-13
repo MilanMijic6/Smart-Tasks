@@ -13,15 +13,16 @@ data class TaskEntity(
     val title: String,
     val description: String,
     val priority: Int,
-    val status: String = ItemStatus.Unresolved.displayName
+    val status: String = ItemStatus.Unresolved.displayName,
+    val comment: String? = null
 )
 
 fun TaskEntity.toTask(): Task {
-    return Task(id, targetDate, dueDate, title, description, priority, status.toItemStatus())
+    return Task(id, targetDate, dueDate, title, description, priority, status.toItemStatus(), comment)
 }
 
 fun Task.toTaskEntity(): TaskEntity {
-    return TaskEntity(id, targetDate, dueDate, title, description, priority, status.displayName)
+    return TaskEntity(id, targetDate, dueDate, title, description, priority, status.displayName, comment)
 }
 
 fun String.toItemStatus(): ItemStatus {
@@ -36,4 +37,3 @@ fun String.toItemStatus(): ItemStatus {
         }
     }
 }
-

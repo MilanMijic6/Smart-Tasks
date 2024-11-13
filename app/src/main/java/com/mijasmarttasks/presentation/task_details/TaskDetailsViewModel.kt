@@ -23,9 +23,31 @@ class TaskDetailsViewModel @Inject constructor(
     override fun handleEvents(event: TaskDetailsContract.Event) {
         when (event) {
             TaskDetailsContract.Event.ClickBackArrowButton -> navigateBack()
-            is TaskDetailsContract.Event.ClickNotResolveButton -> resolveTask(ItemStatus.CantResolve, event.task)
-            is TaskDetailsContract.Event.ClickResolveButton -> resolveTask(ItemStatus.Resolved, event.task)
+            is TaskDetailsContract.Event.ClickNotResolveButton -> resolveTask(
+                ItemStatus.CantResolve,
+                event.task
+            )
+
+            is TaskDetailsContract.Event.ClickResolveButton -> resolveTask(
+                ItemStatus.Resolved,
+                event.task
+            )
+
             is TaskDetailsContract.Event.ShowTaskDetails -> getTask(event.id)
+            is TaskDetailsContract.Event.EnterCommentUpdate -> event.updateInput()
+            is TaskDetailsContract.Event.SaveCommentButton -> addComment(event.comment, event.task)
+        }
+    }
+
+    private fun TaskDetailsContract.Event.EnterCommentUpdate.updateInput() {
+        viewModelScope.launch {
+            setState {
+                TaskDetailsContract.State.Update(
+                    viewState.value.taskDetailsScreenModel.copy(
+                        inputComment = comment
+                    )
+                )
+            }
         }
     }
 
@@ -63,6 +85,27 @@ class TaskDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             runCatching {
                 val updatedTask = taskWithDaysLeft.task.copy(status = status)
+                val updatedTaskWithDaysLeft = taskWithDaysLeft.copy(task = updatedTask)
+                updateTaskUseCase.invoke(updatedTask)
+                setState {
+                    TaskDetailsContract.State.Update(
+                        viewState.value.taskDetailsScreenModel.copy(
+                            taskWithDaysLeft = updatedTaskWithDaysLeft
+                        )
+                    )
+                }
+            }.onFailure {
+                setState {
+                    TaskDetailsContract.State.Error(viewState.value.taskDetailsScreenModel)
+                }
+            }
+        }
+    }
+
+    private fun addComment(comment: String, taskWithDaysLeft: TaskWithDaysLeft) {
+        viewModelScope.launch {
+            runCatching {
+                val updatedTask = taskWithDaysLeft.task.copy(comment = comment)
                 val updatedTaskWithDaysLeft = taskWithDaysLeft.copy(task = updatedTask)
                 updateTaskUseCase.invoke(updatedTask)
                 setState {

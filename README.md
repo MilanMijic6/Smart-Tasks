@@ -7,3 +7,5 @@ Some stuff I wanted to do, but I don't have enough time:
 3. I created a network observer, but I don't use it
 4. Probably I missed some resources (dimensions for example) may be also strings
 5. Unit tests I added only for domain layer
+6. For updating status and comment, I used @Update from Room. I know it should be better for performance
+to do that with Query, since with Updated whole row (all fields will be updated)

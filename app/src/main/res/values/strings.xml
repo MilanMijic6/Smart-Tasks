@@ -7,4 +7,8 @@
     <string name="no_tasks_for_today_label">No tasks for today!</string>
     <string name="task_details">Task details</string>
     <string name="unresolved">Unresolved</string>
+    <string name="enter_your_comment_label">Enter your comment</string>
+    <string name="no_label">No</string>
+    <string name="yes_label">Yes</string>
+    <string name="add_a_comment_label">Add a comment?</string>
 </resources>

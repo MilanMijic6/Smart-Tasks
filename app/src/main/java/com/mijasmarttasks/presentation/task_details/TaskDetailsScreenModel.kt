@@ -6,7 +6,8 @@ import com.mijasmarttasks.domain.tasks.model.TaskWithDaysLeft
 
 data class TaskDetailsScreenModel(
     val taskWithDaysLeft: TaskWithDaysLeft,
-    val errorMsg: String?
+    val errorMsg: String?,
+    val inputComment: String
 )
 
 fun setInitState(): TaskDetailsScreenModel = TaskDetailsScreenModel(
@@ -18,9 +19,11 @@ fun setInitState(): TaskDetailsScreenModel = TaskDetailsScreenModel(
             title = "",
             description = "",
             priority = 0,
-            status = ItemStatus.Unresolved
+            status = ItemStatus.Unresolved,
+            comment = ""
         ),
         daysLeft = 0
     ),
-    errorMsg = ""
+    errorMsg = "",
+    inputComment = ""
 )

@@ -10,7 +10,8 @@ data class Task(
     val title: String,
     val description: String,
     val priority: Int,
-    val status: ItemStatus = ItemStatus.Unresolved
+    val status: ItemStatus = ItemStatus.Unresolved,
+    val comment: String? = null
 ) {
     fun calculateDaysLeft(): Int? {
         val target = targetDate.toDate()

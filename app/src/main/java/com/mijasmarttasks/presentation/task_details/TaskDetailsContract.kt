@@ -12,6 +12,8 @@ class TaskDetailsContract {
         data class ClickResolveButton(val task: TaskWithDaysLeft) : Event()
         data class ClickNotResolveButton(val task: TaskWithDaysLeft) : Event()
         data object ClickBackArrowButton: Event()
+        data class EnterCommentUpdate(val comment: String) : Event()
+        data class SaveCommentButton(val comment: String, val task: TaskWithDaysLeft): Event()
     }
 
     sealed class State : ViewState {

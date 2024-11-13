@@ -31,6 +31,7 @@ import com.mijasmarttasks.presentation.tasks.ui.TaskItem
 import com.mijasmarttasks.presentation.ui.theme.MainBeige
 import com.mijasmarttasks.presentation.ui.theme.MainGreen
 import com.mijasmarttasks.presentation.ui.theme.MainRed
+import com.mijasmarttasks.presentation.ui.theme.MainWhite
 import com.mijasmarttasks.presentation.ui.theme.MainYellow
 import com.mijasmarttasks.presentation.ui.theme.extraBoldFontFamily
 import com.mijasmarttasks.presentation.util.components.RegularText
@@ -130,37 +131,17 @@ fun TaskDetailsResolvePart(
         }
         when (taskWithDaysLeft.task.status) {
             ItemStatus.Resolved -> {
-                Box(
-                    modifier = Modifier
-                        .padding(
-                            top = 16.dp
-                        )
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.sign_resolved),
-                        contentDescription = null,
-                        contentScale = ContentScale.FillWidth,
-                        modifier = Modifier
-                            .size(150.dp)
-                    )
-                }
+                ResolveUpdateView(
+                    taskWithDaysLeft = taskWithDaysLeft,
+                    icon = R.drawable.sign_resolved
+                )
             }
 
             ItemStatus.CantResolve -> {
-                Box(
-                    modifier = Modifier
-                        .padding(
-                            top = 16.dp
-                        )
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.unresolved_sign),
-                        contentDescription = null,
-                        contentScale = ContentScale.FillWidth,
-                        modifier = Modifier
-                            .size(150.dp)
-                    )
-                }
+                ResolveUpdateView(
+                    taskWithDaysLeft = taskWithDaysLeft,
+                    icon = R.drawable.unresolved_sign
+                )
             }
 
             else -> {
@@ -200,6 +181,36 @@ fun TaskDetailsResolvePart(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ResolveUpdateView(
+    taskWithDaysLeft: TaskWithDaysLeft,
+    icon: Int
+) {
+    Column(
+        modifier = Modifier
+            .padding(
+                top = 16.dp
+            )
+    ) {
+        Image(
+            painter = painterResource(id = icon),
+            contentDescription = null,
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier
+                .size(150.dp)
+        )
+
+        if (taskWithDaysLeft.task.comment != null) {
+            Text(
+                text = "Comment: " + taskWithDaysLeft.task.comment,
+                fontFamily = extraBoldFontFamily,
+                fontSize = 14.sp,
+                color = MainWhite
+            )
         }
     }
 }
