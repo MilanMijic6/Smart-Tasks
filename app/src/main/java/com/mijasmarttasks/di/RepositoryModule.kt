@@ -1,8 +1,10 @@
 package com.mijasmarttasks.di
 
 import com.mijasmarttasks.data.local.TaskDao
+import com.mijasmarttasks.data.task_details.repository.TaskDetailsRepositoryImpl
 import com.mijasmarttasks.data.tasks.remote.TasksApi
 import com.mijasmarttasks.data.tasks.repository.TasksRepositoryImpl
+import com.mijasmarttasks.domain.task_details.repository.TaskDetailsRepository
 import com.mijasmarttasks.domain.tasks.repository.TasksRepository
 import dagger.Module
 import dagger.Provides
@@ -16,9 +18,14 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideTvCodeRepository(
+    fun provideTasksRepository(
         api: TasksApi,
         taskDao: TaskDao
     ): TasksRepository = TasksRepositoryImpl(api, taskDao)
 
+    @Provides
+    @Singleton
+    fun provideTaskDetailsRepository(
+        taskDao: TaskDao
+    ): TaskDetailsRepository = TaskDetailsRepositoryImpl(taskDao)
 }

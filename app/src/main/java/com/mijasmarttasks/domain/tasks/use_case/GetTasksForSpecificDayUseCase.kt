@@ -8,7 +8,6 @@ import javax.inject.Inject
 class GetTasksForSpecificDayUseCase @Inject constructor(
     private val repository: TasksRepository
 ) {
-    suspend operator fun invoke(date: Date): List<Task> {
-        return repository.getTasksForSpecificDay(date)
-    }
+    suspend operator fun invoke(date: Date): List<Task> = repository.getTasksForSpecificDay(date)
+
 }

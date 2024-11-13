@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.mijasmarttasks.presentation.splash.SplashScreen
+import com.mijasmarttasks.presentation.task_details.TaskDetailsScreen
 import com.mijasmarttasks.presentation.tasks.TasksScreen
 
 @Composable
@@ -29,13 +30,23 @@ fun NavigationTree(
                 )
             }
         }
-
         composable(
             route = Screen.TasksScreen.route
         ) {
             EnterAnimationDetail {
                 TasksScreen(
                     navController = navController
+                )
+            }
+        }
+        composable(
+            route = Screen.TaskDetailsScreen.route + "/{taskId}",
+        ) { backStackEntry ->
+            val taskId = backStackEntry.arguments?.getString("taskId") ?: ""
+            EnterAnimationDetail {
+                TaskDetailsScreen(
+                    navController = navController,
+                    taskId = taskId
                 )
             }
         }

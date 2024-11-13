@@ -55,7 +55,8 @@ fun TasksScreen(
             TasksScreenContent(
                 tasks = state.tasksScreenModel.tasks,
                 selectedDate = state.tasksScreenModel.selectedDate,
-                handleEvent = handleEvent
+                handleEvent = handleEvent,
+                viewModel = viewModel
             )
         }
     }
@@ -64,7 +65,7 @@ fun TasksScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 is TasksContract.Effect.NavigateToDetailsScreen -> {
-
+                    navController.navigate("task_details_screen/${effect.taskId}")
                 }
             }
         }
@@ -75,12 +76,15 @@ fun TasksScreen(
 fun TasksScreenContent(
     tasks: List<TaskWithDaysLeft>,
     selectedDate: Date,
-    handleEvent: (TasksContract.Event) -> Unit
+    handleEvent: (TasksContract.Event) -> Unit,
+    viewModel: TasksScreenViewModel
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MainYellow)
+            .background(
+                color = MainYellow
+            )
     ) {
         Row(
             modifier = Modifier
@@ -93,29 +97,36 @@ fun TasksScreenContent(
                 imageVector = Icons.Default.ArrowBackIosNew,
                 contentDescription = "Left Arrow",
                 tint = Color.White,
-                modifier = Modifier.clickable {
-                    handleEvent(TasksContract.Event.ShowTasksForYesterday)
-                }
+                modifier = Modifier
+                    .clickable {
+                        handleEvent(TasksContract.Event.ShowTasksForYesterday)
+                    }
             )
             Text(
                 text = formatDateLabel(selectedDate),
                 color = Color.White,
                 fontSize = 18.sp,
                 fontFamily = extraBoldFontFamily,
-                modifier = Modifier.align(Alignment.CenterVertically)
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
             )
             Icon(
                 imageVector = Icons.Default.ArrowForwardIos,
                 contentDescription = "Right Arrow",
                 tint = Color.White,
-                modifier = Modifier.clickable {
-                    handleEvent(TasksContract.Event.ShowTasksForTomorrow)
-                }
+                modifier = Modifier
+                    .clickable {
+                        handleEvent(TasksContract.Event.ShowTasksForTomorrow)
+                    }
             )
         }
 
         if (tasks.isEmpty()) EmptyTasksList()
-        else TasksList(tasks)
+        else TasksList(tasks) {
+            viewModel.handleEvents(
+                TasksContract.Event.ClickOnTask(it.id)
+            )
+        }
     }
 }
 

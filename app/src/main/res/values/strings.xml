@@ -5,4 +5,5 @@
     <string name="due_date_label">Due date</string>
     <string name="today_label">Today</string>
     <string name="no_tasks_for_today_label">No tasks for today!</string>
+    <string name="task_details">Task details</string>
 </resources>

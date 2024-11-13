@@ -26,10 +26,11 @@ import com.mijasmarttasks.presentation.util.components.RegularText
 
 @Composable
 fun TaskItem(
-    taskWithDaysLeft: TaskWithDaysLeft
+    taskWithDaysLeft: TaskWithDaysLeft,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(
                 vertical = 5.dp

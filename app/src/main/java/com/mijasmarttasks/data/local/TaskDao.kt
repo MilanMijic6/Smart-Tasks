@@ -14,4 +14,10 @@ interface TaskDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(tasks: List<TaskEntity>)
 
+    @Query("SELECT * FROM tasks WHERE id = :taskId")
+    suspend fun getTaskById(taskId: String): TaskEntity
+
+    @Update
+    suspend fun updateTask(task: TaskEntity)
+
 }

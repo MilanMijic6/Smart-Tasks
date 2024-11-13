@@ -1,5 +1,6 @@
 package com.mijasmarttasks.domain.tasks.model
 
+import com.mijasmarttasks.domain.task_details.model.ItemStatus
 import com.mijasmarttasks.presentation.util.toDate
 
 data class Task(
@@ -8,7 +9,8 @@ data class Task(
     val dueDate: String?,
     val title: String,
     val description: String,
-    val priority: Int
+    val priority: Int,
+    val status: ItemStatus = ItemStatus.Unresolved
 ) {
     fun calculateDaysLeft(): Int? {
         val target = targetDate.toDate()

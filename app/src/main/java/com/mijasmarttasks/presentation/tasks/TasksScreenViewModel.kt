@@ -29,7 +29,7 @@ class TasksScreenViewModel @Inject constructor(
         }
     }
 
-    private fun getTask(date: Date) {
+    private fun getTasks(date: Date) {
         viewModelScope.launch {
             runCatching {
                 val tasks = getTasksForSpecificDayUseCase.invoke(date)
@@ -62,16 +62,16 @@ class TasksScreenViewModel @Inject constructor(
 
     private fun fetchTasksForToday() {
         currentDate = Calendar.getInstance()
-        getTask(currentDate.time)
+        getTasks(currentDate.time)
     }
 
     private fun fetchTasksForYesterday() {
         currentDate.add(Calendar.DAY_OF_YEAR, -1)
-        getTask(currentDate.time)
+        getTasks(currentDate.time)
     }
 
     private fun fetchTasksForTomorrow() {
         currentDate.add(Calendar.DAY_OF_YEAR, 1)
-        getTask(currentDate.time)
+        getTasks(currentDate.time)
     }
 }

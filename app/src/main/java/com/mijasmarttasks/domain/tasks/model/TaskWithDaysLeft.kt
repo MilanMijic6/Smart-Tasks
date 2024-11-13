@@ -1,6 +1,6 @@
 package com.mijasmarttasks.domain.tasks.model
 
-class TaskWithDaysLeft(
+data class TaskWithDaysLeft(
     val task: Task,
     val daysLeft: Int?
 )
