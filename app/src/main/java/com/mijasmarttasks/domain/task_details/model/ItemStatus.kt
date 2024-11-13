@@ -5,5 +5,5 @@ sealed class ItemStatus(
 ) {
     data object Unresolved : ItemStatus("Unresolved")
     data object Resolved : ItemStatus("Resolved")
-    data object CantResolve : ItemStatus("Unresolved")
+    data object CantResolve : ItemStatus("CantResolve")
 }

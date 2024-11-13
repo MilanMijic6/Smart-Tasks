@@ -1,7 +1,6 @@
 package com.mijasmarttasks.presentation.util.components
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button

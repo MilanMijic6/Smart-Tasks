@@ -3,6 +3,7 @@ package com.mijasmarttasks.presentation.util.components
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
@@ -15,11 +16,12 @@ fun BoldText(
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = 100,
     overflow: TextOverflow = TextOverflow.Ellipsis,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    color: Color = MainRed
 ) {
     Text(
         text = text,
-        color = MainRed,
+        color = color,
         fontFamily = extraBoldFontFamily,
         fontSize = 15.sp,
         textAlign = textAlign,

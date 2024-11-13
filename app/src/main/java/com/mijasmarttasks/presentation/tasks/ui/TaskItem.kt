@@ -21,13 +21,15 @@ import androidx.compose.ui.unit.dp
 import com.mijasmarttasks.R
 import com.mijasmarttasks.domain.tasks.model.TaskWithDaysLeft
 import com.mijasmarttasks.presentation.ui.theme.MainBeige
+import com.mijasmarttasks.presentation.ui.theme.MainRed
 import com.mijasmarttasks.presentation.util.components.BoldText
 import com.mijasmarttasks.presentation.util.components.RegularText
 
 @Composable
 fun TaskItem(
     taskWithDaysLeft: TaskWithDaysLeft,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    textColor: Color = MainRed
 ) {
     Card(
         modifier = modifier
@@ -50,7 +52,8 @@ fun TaskItem(
             BoldText(
                 text = taskWithDaysLeft.task.title,
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                color = textColor
             )
 
             Spacer(
@@ -98,7 +101,8 @@ fun TaskItem(
                 BoldText(
                     text = taskWithDaysLeft.task.dueDate ?: stringResource(R.string.no_date_label),
                     modifier = Modifier
-                        .weight(1f, fill = true)
+                        .weight(1f, fill = true),
+                    color = textColor
                 )
 
                 BoldText(
@@ -106,7 +110,8 @@ fun TaskItem(
                     textAlign = TextAlign.End,
                     modifier = Modifier
                         .weight(1f, fill = true)
-                        .alignByBaseline()
+                        .alignByBaseline(),
+                    color = textColor
                 )
             }
         }

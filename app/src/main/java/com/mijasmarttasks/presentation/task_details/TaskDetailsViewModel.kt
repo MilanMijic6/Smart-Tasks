@@ -1,8 +1,11 @@
 package com.mijasmarttasks.presentation.task_details
 
 import androidx.lifecycle.viewModelScope
+import com.mijasmarttasks.domain.task_details.model.ItemStatus
 import com.mijasmarttasks.domain.task_details.use_case.GetTaskUseCase
 import com.mijasmarttasks.domain.task_details.use_case.GetTaskWithDaysLeftUseCase
+import com.mijasmarttasks.domain.task_details.use_case.UpdateTaskUseCase
+import com.mijasmarttasks.domain.tasks.model.TaskWithDaysLeft
 import com.mijasmarttasks.presentation.util.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -11,17 +14,26 @@ import javax.inject.Inject
 @HiltViewModel
 class TaskDetailsViewModel @Inject constructor(
     private val getTaskUseCase: GetTaskUseCase,
-    private val getTaskWithDaysLeftUseCase: GetTaskWithDaysLeftUseCase
+    private val getTaskWithDaysLeftUseCase: GetTaskWithDaysLeftUseCase,
+    private val updateTaskUseCase: UpdateTaskUseCase
 ) : BaseViewModel<TaskDetailsContract.Event, TaskDetailsContract.State, TaskDetailsContract.Effect>() {
 
     override fun setInitialState(): TaskDetailsContract.State = TaskDetailsContract.State.Init()
 
     override fun handleEvents(event: TaskDetailsContract.Event) {
         when (event) {
-            TaskDetailsContract.Event.ClickBackArrowButton -> TODO()
-            TaskDetailsContract.Event.ClickNotResolveButton -> TODO()
-            TaskDetailsContract.Event.ClickResolveButton -> TODO()
+            TaskDetailsContract.Event.ClickBackArrowButton -> navigateBack()
+            is TaskDetailsContract.Event.ClickNotResolveButton -> resolveTask(ItemStatus.CantResolve, event.task)
+            is TaskDetailsContract.Event.ClickResolveButton -> resolveTask(ItemStatus.Resolved, event.task)
             is TaskDetailsContract.Event.ShowTaskDetails -> getTask(event.id)
+        }
+    }
+
+    private fun navigateBack() {
+        viewModelScope.launch {
+            setEffect {
+                TaskDetailsContract.Effect.NavigateBack
+            }
         }
     }
 
@@ -36,6 +48,27 @@ class TaskDetailsViewModel @Inject constructor(
                     TaskDetailsContract.State.Init(
                         viewState.value.taskDetailsScreenModel.copy(
                             taskWithDaysLeft = taskWithDayLeft
+                        )
+                    )
+                }
+            }.onFailure {
+                setState {
+                    TaskDetailsContract.State.Error(viewState.value.taskDetailsScreenModel)
+                }
+            }
+        }
+    }
+
+    private fun resolveTask(status: ItemStatus, taskWithDaysLeft: TaskWithDaysLeft) {
+        viewModelScope.launch {
+            runCatching {
+                val updatedTask = taskWithDaysLeft.task.copy(status = status)
+                val updatedTaskWithDaysLeft = taskWithDaysLeft.copy(task = updatedTask)
+                updateTaskUseCase.invoke(updatedTask)
+                setState {
+                    TaskDetailsContract.State.Init(
+                        viewState.value.taskDetailsScreenModel.copy(
+                            taskWithDaysLeft = updatedTaskWithDaysLeft
                         )
                     )
                 }

@@ -13,7 +13,6 @@ data class TaskEntity(
     val title: String,
     val description: String,
     val priority: Int,
-    val comment: String? = null,
     val status: String = ItemStatus.Unresolved.displayName
 )
 
@@ -29,8 +28,12 @@ fun String.toItemStatus(): ItemStatus {
     return when (this) {
         ItemStatus.Unresolved.displayName -> ItemStatus.Unresolved
         ItemStatus.Resolved.displayName -> ItemStatus.Resolved
-        ItemStatus.CantResolve.displayName -> ItemStatus.CantResolve
-        else -> ItemStatus.Unresolved
+        ItemStatus.CantResolve.displayName -> {
+            ItemStatus.CantResolve
+        }
+        else ->  {
+            ItemStatus.Unresolved
+        }
     }
 }
 

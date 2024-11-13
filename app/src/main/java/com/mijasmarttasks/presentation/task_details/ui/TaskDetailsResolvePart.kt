@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -20,10 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mijasmarttasks.R
+import com.mijasmarttasks.domain.task_details.model.ItemStatus
 import com.mijasmarttasks.domain.tasks.model.TaskWithDaysLeft
+import com.mijasmarttasks.presentation.task_details.TaskDetailsContract
 import com.mijasmarttasks.presentation.tasks.ui.TaskItem
 import com.mijasmarttasks.presentation.ui.theme.MainBeige
 import com.mijasmarttasks.presentation.ui.theme.MainGreen
@@ -35,107 +38,166 @@ import com.mijasmarttasks.presentation.util.components.RoundedButton
 
 @Composable
 fun TaskDetailsResolvePart(
-    taskWithDaysLeft: TaskWithDaysLeft
+    taskWithDaysLeft: TaskWithDaysLeft,
+    handleEvent: (TaskDetailsContract.Event) -> Unit
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.task_details),
-            contentDescription = null,
-            contentScale = ContentScale.FillWidth,
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    horizontal = 12.dp
-                )
-        )
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    start = 12.dp,
-                    end = 12.dp,
-                    top = 36.dp
-                ),
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Card(
+            Image(
+                painter = painterResource(id = R.drawable.task_details),
+                contentDescription = null,
+                contentScale = ContentScale.FillWidth,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(
+                        horizontal = 12.dp
+                    )
+            )
+            Column(
+                modifier = Modifier
+                    .padding(
+                        start = 12.dp,
+                        end = 12.dp,
+                        top = 36.dp
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
+                Card(
                     modifier = Modifier
-                        .background(
-                            color = Color.White
+                        .fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .background(
+                                color = Color.White
+                            )
+                    ) {
+                        TaskItem(
+                            taskWithDaysLeft = taskWithDaysLeft,
+                            textColor = when (taskWithDaysLeft.task.status) {
+                                ItemStatus.Resolved -> MainGreen
+                                else -> MainRed
+                            }
+                        )
+                        RegularText(
+                            text = taskWithDaysLeft.task.description,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    horizontal = 8.dp
+                                )
+                        )
+                        Spacer(
+                            modifier = Modifier
+                                .height(6.dp)
+                        )
+                        HorizontalDivider(
+                            color = MainBeige,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(1.dp)
+                                .padding(
+                                    horizontal = 8.dp
+                                )
+                        )
+                        Spacer(
+                            modifier = Modifier
+                                .height(10.dp)
+                        )
+                        Text(
+                            text = if (taskWithDaysLeft.task.status == ItemStatus.CantResolve)
+                                stringResource(R.string.unresolved) else taskWithDaysLeft.task.status.displayName,
+                            color = when (taskWithDaysLeft.task.status) {
+                                ItemStatus.Resolved -> MainGreen
+                                ItemStatus.CantResolve -> MainRed
+                                else -> MainYellow
+                            },
+                            fontSize = 16.sp,
+                            fontFamily = extraBoldFontFamily,
+                            modifier = Modifier
+                                .padding(
+                                    horizontal = 8.dp
+                                )
+                        )
+                    }
+                }
+            }
+        }
+        when (taskWithDaysLeft.task.status) {
+            ItemStatus.Resolved -> {
+                Box(
+                    modifier = Modifier
+                        .padding(
+                            top = 16.dp
                         )
                 ) {
-                    TaskItem(
-                        taskWithDaysLeft = taskWithDaysLeft
-                    )
-                    RegularText(
-                        text = taskWithDaysLeft.task.description,
+                    Image(
+                        painter = painterResource(id = R.drawable.sign_resolved),
+                        contentDescription = null,
+                        contentScale = ContentScale.FillWidth,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                horizontal = 8.dp
-                            )
-                    )
-                    Spacer(
-                        modifier = Modifier
-                            .height(6.dp)
-                    )
-                    HorizontalDivider(
-                        color = MainBeige,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(1.dp)
-                            .padding(
-                                horizontal = 8.dp
-                            )
-                    )
-                    Spacer(
-                        modifier = Modifier
-                            .height(10.dp)
-                    )
-                    Text(
-                        text = taskWithDaysLeft.task.status.displayName,
-                        color = MainYellow,
-                        fontSize = 16.sp,
-                        fontFamily = extraBoldFontFamily,
-                        modifier = Modifier
-                            .padding(
-                                horizontal = 8.dp
-                            )
+                            .size(150.dp)
                     )
                 }
             }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 32.dp,
-                        bottom = 16.dp
-                    ),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                RoundedButton(
-                    text = "Resolve",
-                    backgroundColor = MainGreen,
+            ItemStatus.CantResolve -> {
+                Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .padding(
+                            top = 16.dp
+                        )
                 ) {
-
+                    Image(
+                        painter = painterResource(id = R.drawable.unresolved_sign),
+                        contentDescription = null,
+                        contentScale = ContentScale.FillWidth,
+                        modifier = Modifier
+                            .size(150.dp)
+                    )
                 }
-                RoundedButton(
-                    text = "Can't resolve",
-                    backgroundColor = MainRed,
-                    modifier = Modifier
-                        .weight(1f)
-                ) {
+            }
 
+            else -> {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            top = 8.dp,
+                            start = 12.dp,
+                            end = 12.dp
+                        ),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    RoundedButton(
+                        text = "Resolve",
+                        backgroundColor = MainGreen,
+                        modifier = Modifier
+                            .weight(1f)
+                    ) {
+                        handleEvent(
+                            TaskDetailsContract.Event.ClickResolveButton(
+                                taskWithDaysLeft
+                            )
+                        )
+                    }
+                    RoundedButton(
+                        text = "Can't resolve",
+                        backgroundColor = MainRed,
+                        modifier = Modifier
+                            .weight(1f)
+                    ) {
+                        handleEvent(
+                            TaskDetailsContract.Event.ClickNotResolveButton(
+                                taskWithDaysLeft
+                            )
+                        )
+                    }
                 }
             }
         }

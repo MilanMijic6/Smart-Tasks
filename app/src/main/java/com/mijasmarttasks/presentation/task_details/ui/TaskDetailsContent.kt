@@ -5,14 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import com.mijasmarttasks.domain.tasks.model.TaskWithDaysLeft
+import com.mijasmarttasks.presentation.task_details.TaskDetailsContract
 import com.mijasmarttasks.presentation.ui.theme.MainYellow
 
 @Composable
 fun TaskDetailsContent(
-    navController: NavController,
-    taskWithDaysLeft: TaskWithDaysLeft
+    taskWithDaysLeft: TaskWithDaysLeft,
+    handleEvent: (TaskDetailsContract.Event) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -22,10 +22,11 @@ fun TaskDetailsContent(
             )
     ) {
         HeaderDetailsView(
-            navController = navController
+            handleEvent = handleEvent
         )
         TaskDetailsResolvePart(
-            taskWithDaysLeft = taskWithDaysLeft
+            taskWithDaysLeft = taskWithDaysLeft,
+            handleEvent = handleEvent
         )
     }
 }

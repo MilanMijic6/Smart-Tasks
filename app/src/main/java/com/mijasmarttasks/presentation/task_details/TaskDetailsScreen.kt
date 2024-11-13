@@ -25,8 +25,8 @@ fun TaskDetailsScreen(
 
         is TaskDetailsContract.State.Init -> {
             TaskDetailsContent(
-                navController = navController,
-                taskWithDaysLeft = state.taskDetailsScreenModel.taskWithDaysLeft
+                taskWithDaysLeft = state.taskDetailsScreenModel.taskWithDaysLeft,
+                handleEvent = handleEvent
             )
         }
 
@@ -36,5 +36,10 @@ fun TaskDetailsScreen(
     }
     LaunchedEffect(Unit) {
         viewModel.handleEvents(TaskDetailsContract.Event.ShowTaskDetails(id = taskId))
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                TaskDetailsContract.Effect.NavigateBack -> navController.popBackStack()
+            }
+        }
     }
 }

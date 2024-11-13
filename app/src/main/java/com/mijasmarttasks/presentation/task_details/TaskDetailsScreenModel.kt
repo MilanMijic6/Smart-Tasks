@@ -1,5 +1,6 @@
 package com.mijasmarttasks.presentation.task_details
 
+import com.mijasmarttasks.domain.task_details.model.ItemStatus
 import com.mijasmarttasks.domain.tasks.model.Task
 import com.mijasmarttasks.domain.tasks.model.TaskWithDaysLeft
 
@@ -16,7 +17,8 @@ fun setInitState(): TaskDetailsScreenModel = TaskDetailsScreenModel(
             dueDate = "",
             title = "",
             description = "",
-            priority = 0
+            priority = 0,
+            status = ItemStatus.Unresolved
         ),
         daysLeft = 0
     ),

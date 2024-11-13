@@ -59,10 +59,10 @@ class SplashScreenViewModel @Inject constructor(
                 }.onSuccess {
                     setEffect { SplashContract.Effect.NavigateToTasksScreen }
                 }.onFailure {
-                    //todo handle failure request
+                    //todo handle failure
                 }
             }.onFailure {
-                //todo handle failure request
+                //todo handle failure
             }
         }
     }

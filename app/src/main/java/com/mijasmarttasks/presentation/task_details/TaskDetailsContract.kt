@@ -1,5 +1,6 @@
 package com.mijasmarttasks.presentation.task_details
 
+import com.mijasmarttasks.domain.tasks.model.TaskWithDaysLeft
 import com.mijasmarttasks.presentation.util.ViewEvent
 import com.mijasmarttasks.presentation.util.ViewSideEffect
 import com.mijasmarttasks.presentation.util.ViewState
@@ -8,8 +9,8 @@ class TaskDetailsContract {
 
     sealed class Event : ViewEvent {
         data class ShowTaskDetails(val id: String) : Event()
-        data object ClickResolveButton : Event()
-        data object ClickNotResolveButton : Event()
+        data class ClickResolveButton(val task: TaskWithDaysLeft) : Event()
+        data class ClickNotResolveButton(val task: TaskWithDaysLeft) : Event()
         data object ClickBackArrowButton: Event()
     }
 
@@ -33,5 +34,7 @@ class TaskDetailsContract {
         ) : State()
     }
 
-    sealed class Effect : ViewSideEffect
+    sealed class Effect : ViewSideEffect {
+        data object NavigateBack : Effect()
+    }
 }

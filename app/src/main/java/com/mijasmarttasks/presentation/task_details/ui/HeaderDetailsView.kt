@@ -17,13 +17,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.mijasmarttasks.R
+import com.mijasmarttasks.presentation.task_details.TaskDetailsContract
 import com.mijasmarttasks.presentation.ui.theme.extraBoldFontFamily
 
 @Composable
 fun HeaderDetailsView(
-    navController: NavController
+    handleEvent: (TaskDetailsContract.Event) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -38,7 +38,7 @@ fun HeaderDetailsView(
             tint = Color.White,
             modifier = Modifier
                 .clickable {
-                    navController.popBackStack()
+                    handleEvent(TaskDetailsContract.Event.ClickBackArrowButton)
                 }
         )
         Box(
