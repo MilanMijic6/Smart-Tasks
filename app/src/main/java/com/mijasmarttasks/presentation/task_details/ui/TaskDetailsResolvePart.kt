@@ -83,7 +83,8 @@ fun TaskDetailsResolvePart(
                             textColor = when (taskWithDaysLeft.task.status) {
                                 ItemStatus.Resolved -> MainGreen
                                 else -> MainRed
-                            }
+                            },
+                            showStatusIcon = false
                         )
                         RegularText(
                             text = taskWithDaysLeft.task.description,

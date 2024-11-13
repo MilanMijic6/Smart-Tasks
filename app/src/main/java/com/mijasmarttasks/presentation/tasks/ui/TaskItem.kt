@@ -1,24 +1,30 @@
 package com.mijasmarttasks.presentation.tasks.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mijasmarttasks.R
+import com.mijasmarttasks.domain.task_details.model.ItemStatus
 import com.mijasmarttasks.domain.tasks.model.TaskWithDaysLeft
 import com.mijasmarttasks.presentation.ui.theme.MainBeige
 import com.mijasmarttasks.presentation.ui.theme.MainRed
@@ -29,7 +35,8 @@ import com.mijasmarttasks.presentation.util.components.RegularText
 fun TaskItem(
     taskWithDaysLeft: TaskWithDaysLeft,
     modifier: Modifier = Modifier,
-    textColor: Color = MainRed
+    textColor: Color = MainRed,
+    showStatusIcon: Boolean = true
 ) {
     Card(
         modifier = modifier
@@ -49,12 +56,35 @@ fun TaskItem(
                 .fillMaxWidth()
                 .padding(10.dp)
         ) {
-            BoldText(
-                text = taskWithDaysLeft.task.title,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                color = textColor
-            )
+            Box(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                BoldText(
+                    text = taskWithDaysLeft.task.title,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    color = textColor,
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(
+                            end = 40.dp
+                        )
+                )
+                if (showStatusIcon && taskWithDaysLeft.task.status != ItemStatus.Unresolved) {
+                    val icon = if (taskWithDaysLeft.task.status == ItemStatus.CantResolve)
+                        R.drawable.btn_unresolved else R.drawable.btn_resolved
+                    Icon(
+                        painter = painterResource(
+                            id = icon
+                        ),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .size(30.dp),
+                        tint = Color.Unspecified
+                    )
+                }
+            }
 
             Spacer(
                 modifier = Modifier
