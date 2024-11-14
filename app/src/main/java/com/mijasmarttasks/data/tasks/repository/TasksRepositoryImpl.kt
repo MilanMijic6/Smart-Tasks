@@ -22,9 +22,7 @@ class TasksRepositoryImpl @Inject constructor(
 
     override suspend fun saveTasks(tasks: List<Task>) = taskDao.insertAll(tasks.map { it.toTaskEntity() })
 
-    override suspend fun getTasksFromDatabase(): List<Task> {
-        return taskDao.getAllTasks().map { it.toTask() }
-    }
+    override suspend fun getTasksFromDatabase(): List<Task> = taskDao.getAllTasks().map { it.toTask() }
 
     override suspend fun getTasksForSpecificDay(date: Date): List<Task> = withContext(Dispatchers.IO) {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
